@@ -6,9 +6,12 @@
 #include "CommCodes.hpp"
 
 struct ControlParameters {
+    // From the datasheet:
     // The more max heating dots, the more peak current will cost when
     // printing, the faster printing speed. The max heating dots is 8*(n1+1)
-    uint16_t max_heating_dots; // defaults to 64
+    // Meaning:
+    // The number of dots that can be activated at a time
+    uint16_t max_heating_dots; // defaults to 7 = 64 dots
 
     // The more heating time, the more density, but the slower printing
     // speed. If heating time is too short, blank page may occur.
@@ -47,13 +50,16 @@ public:
 private:
     SoftwareSerial serial;
 
-    PrinterMode mode;
-    RasterImageMode rasterImageMode;
-    int width_dots;
-    int height_dots;
+    PrinterMode mode {PrinterMode::Normal};
+    RasterImageMode raster_image_mode;
+    uint16_t width_dots { 0 };
+    uint16_t length_dots { 0 };
+    uint16_t row_printing_time_us { 0 };
 
 public:
-    ThermalPrinter(int rx_pin, int tx_pin, int width_dots, int height_dots);
+    ThermalPrinter(int rx_pin, int tx_pin, uint16_t width_dots, uint16_t length_dots);
+
+    uint16_t get_row_printing_time_us() const { return row_printing_time_us; }
 
     ErrCode write(ControlParameters ctrl);
 

@@ -1,0 +1,16 @@
+[rail]
+pulley_diam_mm = 10.2
+microstep = 1
+steps_per_rotation = 200
+
+[head]
+rx_pin = 8
+tx_pin = 9
+
+density_dot_mm = 8
+band_width_dots = 384
+band_length_mm = 227
+
+dots_bloc = 64
+firing_delay_us = 20
+firing_duration_us = 10

@@ -9,6 +9,7 @@ class SMU {
 private:
     ThermalPrinter thermalPrinter;
     States state;
+    uint16_t rail_steps_velocity; // steps/s
 
 public:
     SMU();

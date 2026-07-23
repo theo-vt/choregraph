@@ -1,7 +1,7 @@
 // File automaticaly generated, any edit will be overwritten on the next build
 
-#ifndef BOP_COMMCODES_HPP
-#define BOP_COMMCODES_HPP
+#ifndef COMMCODES_HPP_
+#define COMMCODES_HPP_
 
 #include <stdint.h>
 
