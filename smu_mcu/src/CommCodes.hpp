@@ -24,4 +24,12 @@ enum class ErrCode : uint8_t {
   unknown_error=6,
 };
 
+enum class States : uint8_t {
+  error=0,
+  iddle=1,
+  stencil_advance=2,
+  receiving_band_data=3,
+  printing_band=4,
+};
+
 #endif

@@ -28,4 +28,6 @@ with open("src/CommCodes.hpp", "w") as f:
     f.write("\n\n")
     f.write(pyEnum_to_cppEnum(CommCodes.ErrCode))
     f.write("\n\n")
+    f.write(pyEnum_to_cppEnum(CommCodes.States))
+    f.write("\n\n")
     f.write("#endif")

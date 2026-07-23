@@ -19,3 +19,10 @@ class ErrCode (IntEnum):
   index_error = 4
   empty_buffer = 5
   unknown_error = 6
+
+class States (IntEnum):
+  error = 0
+  iddle = 1
+  stencil_advance = 2
+  receiving_band_data = 3
+  printing_band = 4
