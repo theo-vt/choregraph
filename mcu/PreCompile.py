@@ -20,7 +20,7 @@ def pyEnum_to_cppEnum (someEnum):
     out += "};"
     return out
 
-with open("include/CommCodes.hpp", "w") as f:
+with open("src/CommCodes.hpp", "w") as f:
     f.write("// File automaticaly generated, any edit will be overwritten on the next build\n\n")
     f.write("#ifndef BOP_COMMCODES_HPP\n#define BOP_COMMCODES_HPP\n\n")
     f.write("#include <stdint.h>\n\n")
