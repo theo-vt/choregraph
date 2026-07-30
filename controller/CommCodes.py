@@ -18,7 +18,8 @@ class ErrCode (IntEnum):
   command_not_handled = 3
   index_error = 4
   empty_buffer = 5
-  unknown_error = 6
+  motor_initialization_error = 6
+  unknown_error = 7
 
 class States (IntEnum):
   error = 0

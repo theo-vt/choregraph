@@ -10,6 +10,8 @@ namespace rail {
 constexpr float pulley_diam_mm = 10.2;
 constexpr int microstep = 1;
 constexpr int steps_per_rotation = 200;
+constexpr int stepper_dir_pin = 10;
+constexpr int stepper_step_pin = 11;
 
 } // !rail
 
@@ -25,6 +27,13 @@ constexpr int firing_delay_us = 20;
 constexpr int firing_duration_us = 10;
 
 } // !head
+
+namespace roll {
+
+constexpr int stepper_dir_pin = 8;
+constexpr int stepper_step_pin = 9;
+
+} // !roll
 
 } // !config 
 

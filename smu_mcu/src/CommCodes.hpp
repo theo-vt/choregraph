@@ -21,7 +21,8 @@ enum class ErrCode : uint8_t {
   command_not_handled=3,
   index_error=4,
   empty_buffer=5,
-  unknown_error=6,
+  motor_initialization_error=6,
+  unknown_error=7,
 };
 
 enum class States : uint8_t {
