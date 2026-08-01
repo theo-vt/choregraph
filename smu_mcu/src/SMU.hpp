@@ -15,11 +15,19 @@ private:
     uint16_t rail_steps_velocity; // steps/s
     FastAccelStepper* rail_stepper {nullptr};
     FastAccelStepper* roll_stepper {nullptr};
+    int steps_per_row {0};
 
 public:
     SMU(FastAccelStepperEngine& stepper_engine);
 
+    void spin();
+
     ErrCode handle_controller_input(uint8_t* bytes, uint16_t len);
+
+    void advance_stencil();
+    void home_rail();
+
+    void flag_error(ErrCode err);
 };
 
 #endif

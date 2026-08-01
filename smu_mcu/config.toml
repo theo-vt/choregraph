@@ -1,9 +1,11 @@
+
 [rail]
 pulley_diam_mm = 10.2
 microstep = 1
 steps_per_rotation = 200
 stepper_dir_pin = 10
 stepper_step_pin = 11
+home_pin = 8
 
 [head]
 rx_pin = 8

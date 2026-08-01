@@ -40,14 +40,94 @@ SMU::SMU(FastAccelStepperEngine& stepper_engine)
     // Set steppers parameters
     float mm_per_step = config::rail::pulley_diam_mm * PI / static_cast<float>(config::rail::microstep*config::rail::steps_per_rotation);
     float mm_per_row = 1.0 / static_cast<float>(config::head::density_dot_mm);
-    float steps_per_row = mm_per_row / mm_per_step;
+    steps_per_row = mm_per_row / mm_per_step;
 
     rail_steps_velocity = steps_per_row * 1e6 / thermal_printer.get_row_printing_time_us();
     
     rail_stepper->setSpeedInHz(rail_steps_velocity);
+
+    pinMode(config::rail::home_pin, INPUT);
 }
+
+void SMU::home_rail()
+{
+    // First approach
+    rail_stepper->move(-steps_per_row);
+    
+    // Monitor pin
+    while (!digitalRead(config::rail::home_pin)) {
+        // If we do all the steps we are probably breaking something right now
+        if (!rail_stepper->isRunning()) {
+            flag_error(ErrCode::homing_error);
+            return;
+        }
+        delayMicroseconds(500);
+    }
+
+    // Back off (blocking)
+    rail_stepper->move(100, true);
+
+    // Move back to switch
+    rail_stepper->move(-150);
+    
+    while (!digitalRead(config::rail::home_pin)) {
+        if (!rail_stepper->isRunning()) {
+            flag_error(ErrCode::homing_error);
+            return;
+        }
+        delayMicroseconds(500);
+    }
+
+    // Back off (blocking)
+    rail_stepper->move(50, true);
+}
+
 
 ErrCode SMU::handle_controller_input(uint8_t* bytes, uint16_t len)
 {
     return ErrCode::ok;
 }
+
+void SMU::flag_error(ErrCode err)
+{
+    state = States::error;
+    error = err;
+
+    rail_stepper->stopMove();
+    roll_stepper->stopMove();
+}
+
+class OpCodeParser {
+private:
+    enum class ReceiverState {
+        WaitingForOpCode,
+        WaitingForOpData,
+    };
+
+    ReceiverState state { ReceiverState::WaitingForOpCode };
+    OpCode opcode;
+    uint16_t expected_op_data_len {0};
+    uint16_t op_data_len {0};
+    uint8_t op_data[16];
+
+public:
+    void handle(uint8_t* bytes, uint16_t len)
+    {
+        if (len == 0) {
+            return;
+        }
+        for (uint16_t index; index < len; ++index) {
+            if (state == ReceiverState::WaitingForOpCode) {
+                if (bytes[index] < static_cast<uint16_t>(OpCode::last)) {
+                    opcode = OpCode(bytes[index]);
+                    expected_op_data_len = opcode_lengths[index];
+                    state = ReceiverState::WaitingForOpData;
+                    break;
+                }
+            }
+            if (state == ReceiverState::WaitingForOpData && op_data_len < expected_op_data_len) {
+                op_data[op_data_len++] = bytes[index];
+            }
+        }
+    }
+};

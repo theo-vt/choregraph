@@ -12,6 +12,7 @@ constexpr int microstep = 1;
 constexpr int steps_per_rotation = 200;
 constexpr int stepper_dir_pin = 10;
 constexpr int stepper_step_pin = 11;
+constexpr int home_pin = 8;
 
 } // !rail
 

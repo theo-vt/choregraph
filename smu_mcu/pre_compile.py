@@ -11,22 +11,38 @@ def write_commcodes():
     CommCodes = importlib.util.module_from_spec( spec )
     loader.exec_module( CommCodes )
 
-    def pyEnum_to_cppEnum (someEnum):
+    def pyEnum_to_cppEnum (someEnum) -> tuple[str, list[int]]:
+        values = []
         out = "enum class {} : uint8_t {{\n".format(someEnum.__name__)
         for pair in someEnum:
             out += "  {}={},\n".format(pair.name, pair.value)
+            values.append(pair.value)
+
+        out += "  last={},\n".format(max(values)+1)
         out += "};"
+        return (out, values)
+    
+    def write_opcodes() -> str:
+        out, values = pyEnum_to_cppEnum(CommCodes.OpCode)
+
+        max_value = max(values)
+        out += "\nconstexpr int opcode_lengths[{}] = {{\n".format(max_value+2)
+        for i in range(max_value+2):
+            out += "  {},\n".format(CommCodes.message_bytes_for_opcode(i))
+
+        out += "};\n"
         return out
+
 
     with open("src/CommCodes.hpp", "w") as f:
         f.write("// File automaticaly generated, any edit will be overwritten on the next build\n\n")
         f.write("#ifndef COMMCODES_HPP_\n#define COMMCODES_HPP_\n\n")
         f.write("#include <stdint.h>\n\n")
-        f.write(pyEnum_to_cppEnum(CommCodes.OpCode))
+        f.write(write_opcodes())
         f.write("\n\n")
-        f.write(pyEnum_to_cppEnum(CommCodes.ErrCode))
+        f.write(pyEnum_to_cppEnum(CommCodes.ErrCode)[0])
         f.write("\n\n")
-        f.write(pyEnum_to_cppEnum(CommCodes.States))
+        f.write(pyEnum_to_cppEnum(CommCodes.States)[0])
         f.write("\n\n")
         f.write("#endif")
 
