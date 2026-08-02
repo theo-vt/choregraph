@@ -34,7 +34,7 @@ def write_commcodes():
         return out
 
 
-    with open("src/CommCodes.hpp", "w") as f:
+    with open("include/CommCodes.hpp", "w") as f:
         f.write("// File automaticaly generated, any edit will be overwritten on the next build\n\n")
         f.write("#ifndef COMMCODES_HPP_\n#define COMMCODES_HPP_\n\n")
         f.write("#include <stdint.h>\n\n")
@@ -61,7 +61,7 @@ def write_configs():
         return config_content
     
 
-    with open("config.toml", "rb") as input, open("src/Config.hpp", "w") as output:
+    with open("config.toml", "rb") as input, open("include/Config.hpp", "w") as output:
         output.write("// File automaticaly generated, any edit will be overwritten on the next build\n\n")
         output.write("#ifndef CONFIG_HPP_\n#define CONFIG_HPP_\n\n")
         output.write("namespace config {\n\n")

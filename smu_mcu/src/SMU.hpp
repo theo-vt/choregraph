@@ -7,6 +7,8 @@
 #include <FastAccelStepper.h>
 #include <FastAccelStepperEngine.h>
 
+#include <CircularBuffer.hpp>
+
 class SMU {
 private:
     ThermalPrinter thermal_printer;
@@ -16,6 +18,8 @@ private:
     FastAccelStepper* rail_stepper {nullptr};
     FastAccelStepper* roll_stepper {nullptr};
     int steps_per_row {0};
+
+    CircularBuffer buffer;
 
 public:
     SMU(FastAccelStepperEngine& stepper_engine);

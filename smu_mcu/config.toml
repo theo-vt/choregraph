@@ -1,4 +1,7 @@
 
+[comm]
+buffer_len = 128
+
 [rail]
 pulley_diam_mm = 10.2
 microstep = 1

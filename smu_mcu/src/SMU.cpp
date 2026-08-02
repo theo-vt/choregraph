@@ -3,7 +3,7 @@
 
 #include "SMU.hpp"
 
-#include "Config.hpp"
+#include <Config.hpp>
 
 SMU::SMU(FastAccelStepperEngine& stepper_engine)
     : thermal_printer(config::head::rx_pin, config::head::tx_pin, config::head::band_width_dots, config::head::band_length_mm * config::head::density_dot_mm)

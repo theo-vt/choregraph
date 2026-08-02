@@ -5,6 +5,12 @@
 
 namespace config {
 
+namespace comm {
+
+constexpr int buffer_len = 128;
+
+} // !comm
+
 namespace rail {
 
 constexpr float pulley_diam_mm = 10.2;
